@@ -60,8 +60,7 @@ footer {
 }
 
 /* Cards */
-/* Cards */
-#cards-container {
+#cards-container, .cards-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Responsive grid layout */
     gap: 15px;
@@ -114,17 +113,12 @@ footer {
 }
 
 @media screen and (max-width: 768px) {
-    .card {
-    }
-
     .card h3 {
         font-size: 16px; /* Adjust font size for smaller screens */
     }
 }
 
 @media screen and (max-width: 576px) {
-    .card {
-    }
     .card h3 {
         font-size: 14px; /* Further adjust font size for even smaller screens */
     }
