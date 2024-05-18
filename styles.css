@@ -49,7 +49,6 @@ ul li {
     margin-top: 10px;
 }
 
-
 footer {
     text-align: center;
     padding: 1em 0;
@@ -60,17 +59,20 @@ footer {
     bottom: 0;
 }
 
+/* Cards */
 #cards-container {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
+    justify-content: flex-start; /* Align cards to the left */
 }
 
 .card {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 200px;
+    width: 80%; /* Responsive width */
+    max-width: 150px;
     cursor: pointer;
     text-align: center;
     padding: 10px;
@@ -87,6 +89,7 @@ footer {
     margin-top: 10px;
 }
 
+/* Search field */
 
 #filter-characters {
     margin-top: 20px;
@@ -106,4 +109,28 @@ footer {
     outline: none;
     border-color: #007bff;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.card h3 {
+    font-size: 18px; /* Set initial font size */
+}
+
+@media screen and (max-width: 768px) {
+    .card {
+        width: 45%; /* Two cards per row on larger screens */
+    }
+
+    .card h3 {
+        font-size: 16px; /* Adjust font size for smaller screens */
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .card {
+        width: 30%; /* Two cards per row on larger screens */
+    }
+
+    .card h3 {
+        font-size: 14px; /* Further adjust font size for even smaller screens */
+    }
 }

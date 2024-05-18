@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Incineroar Matchup Info</title>
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
     <header>
@@ -16,29 +16,39 @@
         <p id="description">Incineroar is a powerful grappler with strong throws and revenge mechanics.</p>
     </section>
 
-    <section id="todo">
-        <h2>TO-DO:</h2>
-        <p>Fix format when click on a card</p>
-        <p>Add favorites</p>
-    </section>
-
     <section id="resources">
         <h2>Resources</h2>
         <ul>
             <li><a href="https://docs.google.com/document/d/1AKYaRLQxM7JP20DImVNj4u_uVHbWGWkxpQ_hNEa6Bdg/edit#heading=h.uk6ziqgkgb0d" target="_blank">Incineroar Discord Resource Doc</a></li>
             <li><a href="https://kuroganehammer.com/Ultimate/Incineroar" target="_blank">Frame data - Kuroganehammer</a></li>
+            <!-- Add more resources as needed -->
         </ul>
     </section>
    
+    <!-- <section id="filter-characters">
+        <h2>Filter Characters</h2>
+        <input type="text" id="character-filter" placeholder="Enter character name...">
+    </section> -->
+    
+
     <section id="matchup-cards">
         <h2>Matchup Cards</h2>
         <input type="text" id="character-filter" placeholder="Enter character name...">
-        <div id="cards-container"></div>
+        <div id="cards-container">
+            <!-- Matchup cards will be populated here -->
+        </div>
     </section>
-        
+    
+    <section id="matchups">
+        <h2>Matchups</h2>
+        <ul id="matchup-list">
+            <!-- Matchups will be populated here -->
+        </ul>
+    </section>
+    
     <footer>
         <p>Created by sbellodev</p>
     </footer>
-    <script src="script.js"></script>
+    <script src="/script.js"></script>
 </body>
 </html>
