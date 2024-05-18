@@ -60,19 +60,18 @@ footer {
 }
 
 /* Cards */
+/* Cards */
 #cards-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Responsive grid layout */
+    gap: 15px;
     justify-content: flex-start; /* Align cards to the left */
 }
 
 .card {
     background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 80%; /* Responsive width */
-    max-width: 150px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     text-align: center;
     padding: 10px;
@@ -90,7 +89,6 @@ footer {
 }
 
 /* Search field */
-
 #filter-characters {
     margin-top: 20px;
 }
@@ -117,7 +115,6 @@ footer {
 
 @media screen and (max-width: 768px) {
     .card {
-        width: 45%; /* Two cards per row on larger screens */
     }
 
     .card h3 {
@@ -127,10 +124,15 @@ footer {
 
 @media screen and (max-width: 576px) {
     .card {
-        width: 30%; /* Two cards per row on larger screens */
     }
-
     .card h3 {
         font-size: 14px; /* Further adjust font size for even smaller screens */
+    }
+    #cards-container {
+        gap: 12px;
+        padding: 8px;
+    }
+    .card img {
+        max-height: 50px; /* Set maximum height */
     }
 }

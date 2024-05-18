@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
         name: "Incineroar",
         description: "Incineroar is a powerful grappler with strong throws and revenge mechanics.",
         matchups: [
-            { opponent: "Mario", description: "Ban tri-plats. Other than that, you should be revenging carelessly thrown fireballs, using fair and nair to trade or wall, and using dariat generously to keep him off you (but be careful if he starts whiff punishing it). Make sure to DI away from platforms to limit extensions.", image: "./img/characters/mario.png" },
+            { opponent: "Mario", description: "Ban tri-plats. Other than that, you should be <b>revenging</b> carelessly thrown <b>fireballs</b>, using <b>fair and nair to trade or wall</b>, and using <b>dariat</b> generously <b>to keep him off you</b> (but be careful if he starts whiff punishing it). Make sure to DI away from platforms to limit extensions.", image: "./img/characters/mario.png" },
             { opponent: "Donkey Kong", description: "You want to abuse DK’s biggest weakness, being the fact that he’s combo food. Press your advantage as hard as possible, and play around tricky down B movement with smart nairs out of shield. He really can’t land, get off ledge, or recover so once you call out one of his options you can carry it very far.", image: "./img/characters/donkeykong.png" },
             { opponent: "Link", description: "Difficult Mu. Like normal, revenge carelessly thrown projectiles. Competing with nair and fair can be troublesome so cornering him and stuffing him out with lots of nairs and fairs can make it hard for him to regain any footing. Ledgeguard when possible and watch out for his few mixups off ledge, most of which can be defeated by shielding and punishing.", image: "./img/characters/link.png" },
             { opponent: "Samus", description: "Playing around zoners is a common skill that you can apply to all types of characters. Incin’s horizontal movement is very bad but his jumps carry him fast and he falls quickly. Use jumps and the mixups that come from them to get in, just be sure not to throw yourself at the enemy. More ideas on how to combat projectiles are in #faq. Other than that, Samus likes to set up a rock, paper, scissors scenario where your respond to charge shot can be called out. Very tough to get around but acknowledge how she’s stopping your approaches and try to outplay that mind game.", image: "./img/characters/samus.png" },
@@ -87,26 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('header h1').textContent = characterInfo.name;
     document.getElementById('description').textContent = characterInfo.description;
 
-        // Populate matchup cards
-    const cardsContainer = document.getElementById('cards-container');
-    characterInfo.matchups.forEach(matchup => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-            <img src="${matchup.image}" alt="${matchup.opponent}">
-            <h3>${matchup.opponent}</h3>
-            <div class="description">${matchup.description}</div>
-        `;
-        const description = card.querySelector('.description');
-        console.log('after desc')
-        card.addEventListener('click', () => {
-            console.log('ad event')
-            console.log(description.style.display)
-            description.style.display = description.style.display != 'block' ? 'block' : 'none';
-        });
-        cardsContainer.appendChild(card);
-    });
-
     // Filter characters
     const characterFilterInput = document.getElementById('character-filter');
     characterFilterInput.addEventListener('input', () => {
@@ -121,4 +101,73 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // Function to expand card on click
+    function expandCard(card) {
+        const description = card.querySelector('.description');
+        description.style.display = description.style.display === 'none' ? 'block' : 'none';
+        if (description.style.display === 'block') {
+            card.style.gridColumnEnd = 'span 4'; // Expand card to fill 4 columns
+            card.style.gridRowEnd = 'span 2'
+        } else {
+            card.style.gridColumnEnd = 'auto'; // Revert to auto sizing
+            card.style.gridRowEnd = 'auto'
+        }
+    }
+
+    // Function to toggle favorite status
+    function toggleFavorite(card) {
+        const favoriteIcon = card.querySelector('.favorite');
+        const opponent = card.querySelector('h3').textContent;
+        const index = characterInfo.matchups.findIndex(matchup => matchup.opponent === opponent);
+        if (characterInfo.matchups[index].favorite) {
+            characterInfo.matchups[index].favorite = false;
+            favoriteIcon.classList.remove('fas');
+            favoriteIcon.classList.add('far');
+        } else {
+            characterInfo.matchups[index].favorite = true;
+            favoriteIcon.classList.remove('far');
+            favoriteIcon.classList.add('fas');
+        }
+        reorderMatchups(); // Reorder matchups based on favorites
+    }
+
+    // Function to reorder matchups based on favorites
+    function reorderMatchups() {
+        const favorites = characterInfo.matchups.filter(matchup => matchup.favorite);
+        const nonFavorites = characterInfo.matchups.filter(matchup => !matchup.favorite);
+        characterInfo.matchups = [...favorites, ...nonFavorites];
+        updateCards(); // Update the display after reordering
+    }
+
+    // Function to update the display of cards
+    function updateCards() {
+        const cardsContainer = document.getElementById('cards-container');
+        cardsContainer.innerHTML = ''; // Clear existing cards
+        characterInfo.matchups.forEach(matchup => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <img src="${matchup.image}" alt="${matchup.opponent}">
+                <h3 style="display:none">${matchup.opponent}</h3>
+                <div class="favorite"><span class="${matchup.favorite ? 'fas' : 'far'} fa-star">${matchup.favorite ? '❤️' : '🤍'}</span></div>
+                <div class="description">${matchup.description}</div>
+            `;
+            const description = card.querySelector('.description');
+            description.style.display = 'none'; // Ensure description is initially hidden
+            card.addEventListener('click', () => {
+                expandCard(card);
+            });
+            const favoriteIcon = card.querySelector('.favorite');
+            favoriteIcon.addEventListener('click', (event) => {
+                event.stopPropagation(); // Prevent expanding card when clicking favorite icon
+                toggleFavorite(card);
+            });
+            cardsContainer.appendChild(card);
+        });
+    }
+
+    // Initial display of cards
+    updateCards();
+
 });
