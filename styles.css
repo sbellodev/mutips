@@ -55,7 +55,7 @@ footer {
     padding: 1em 0;
     background-color: #333;
     color: #fff;
-    position: absolute;
+    
     width: 100%;
     bottom: 0;
 }
@@ -78,10 +78,32 @@ footer {
 
 .card img {
     max-width: 100%;
+    max-height: 70px; /* Set maximum height */
     border-radius: 8px;
 }
 
 .card .description {
     display: none;
     margin-top: 10px;
+}
+
+
+#filter-characters {
+    margin-top: 20px;
+}
+
+#character-filter {
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 300px; /* Limit maximum width */
+    font-size: 16px;
+}
+
+#character-filter:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
