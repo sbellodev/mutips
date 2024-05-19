@@ -84,7 +84,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     document.querySelector('header h1').textContent = characterInfo.name;
-    document.getElementById('description').textContent = characterInfo.description;
     
     const characterFilterInput = document.getElementById('character-filter');
     characterFilterInput.addEventListener('input', () => {
@@ -127,12 +126,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function createCard(matchup, container, section) {
-        const card = createCardElement(matchup, section);
+        const card = createCardElement(matchup);
         cardAddEventListeners(card, matchup, section);
         container.appendChild(card);
     }
     
-    function createCardElement(matchup, section) {
+    function createCardElement(matchup) {
         const card = document.createElement('div');
         card.className = `card category-${matchup.category}`;
         card.innerHTML = `
@@ -155,6 +154,14 @@ document.addEventListener('DOMContentLoaded', () => {
         
         card.addEventListener('click', () => {
             updateDescription(matchup, section);
+
+            const currentDescription = document.getElementById(`${section}-description`);
+            const heartIcon = currentDescription.querySelector('.favorite-heart');
+            heartIcon.addEventListener('click', () => {
+                toggleFavorite(card); 
+                heartIcon.innerHTML = matchup.favorite ? '❤️' : '🤍';
+            });
+            
         });
 
         card.addEventListener('click', () => {
@@ -168,10 +175,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateDescription(matchup, section) {
         const currentDescription = document.getElementById(`${section}-description`);
         currentDescription.innerHTML = '';
-        const descriptionHeader = document.createElement('h3');
+        const descriptionHeader = document.createElement('h2');
         descriptionHeader.textContent = 'Description';
         const descriptionText = document.createElement('div');
-        descriptionText.textContent = matchup.description;
+        const favoriteIcon = matchup.favorite ? '❤️' : '🤍';
+        descriptionText.innerHTML = `${matchup.description} <span class="favorite-heart">${favoriteIcon}</span>`;
         currentDescription.appendChild(descriptionHeader);
         currentDescription.appendChild(descriptionText);
         currentDescription.style.display = 'block';
