@@ -82,12 +82,10 @@ document.addEventListener('DOMContentLoaded', () => {
             { opponent: "Sora", category:"offensive", description: "Sora’s shield pressure and fair/nair chains can often have small gaps between them when they try to go for something more interesting. Nair is good at shaking him off your shield, and revenge is excellent in interrupting both scenarios. Playing slow, holding center, and finding pokes can make Sora’s riskier setups not worth going for.", image: "./img/characters/sora.png" }
         ]
     };
-
-    // Set character information
+    
     document.querySelector('header h1').textContent = characterInfo.name;
     document.getElementById('description').textContent = characterInfo.description;
-
-    // Filter characters
+    
     const characterFilterInput = document.getElementById('character-filter');
     characterFilterInput.addEventListener('input', () => {
         const filterValue = characterFilterInput.value.toLowerCase();
@@ -102,182 +100,132 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Function to expand card on click
-    function expandCard(card) {
-        const description = card.querySelector('.description');
-        const favorite = card.querySelector('.favorite');
-        description.style.display = description.style.display === 'none' ? 'block' : 'none';
-        favorite.style.display = favorite.style.display === 'none' ? 'block' : 'none';
-        
-        if (description.style.display === 'block') {
-            if (window.innerWidth <= 576) {
-                card.style.gridColumnEnd = 'span 3'; 
-            } else {
-                card.style.gridColumnEnd = 'span 4'; 
-            }
-            card.style.gridRowEnd = 'span 2';
-        } else {
-            card.style.gridColumnEnd = 'auto'; 
-            card.style.gridRowEnd = 'auto'
-        }
-    }
-
-    // Function to toggle favorite status
     function toggleFavorite(card) {
-        const favoriteIcon = card.querySelector('.favorite');
-        const opponent = card.querySelector('h3').textContent;
-        const index = characterInfo.matchups.findIndex(matchup => matchup.opponent === opponent);
-        
-        if (characterInfo.matchups[index].favorite) {
-            characterInfo.matchups[index].favorite = false;
-            favoriteIcon.classList.remove('fas');
-            favoriteIcon.classList.add('far');
-        } else {
-            characterInfo.matchups[index].favorite = true;
-            favoriteIcon.classList.remove('far');
-            favoriteIcon.classList.add('fas');
-        }
-    }
-
-    // Function to toggle favorite status
-    function toggleFavorite(card) {
-        const favoriteIcon = card.querySelector('.favorite');
         const opponent = card.querySelector('h3').textContent;
         const index = characterInfo.matchups.findIndex(matchup => matchup.opponent === opponent);
         const isFavorite = !characterInfo.matchups[index].favorite;
         characterInfo.matchups[index].favorite = isFavorite;
-        favoriteIcon.innerHTML = isFavorite ? '❤️' : '🤍'; 
 
-        updateCards(); 
+        updateAllCards(); 
         saveFavoritesToCookies(); 
     }
-    
+
     function updateFavorites() {
-        const favoritesContainer = document.getElementById('favorites-container');
-        favoritesContainer.innerHTML = ''; 
+        const favoritesContainer = document.getElementById('favorites-container-big');
+        favoritesContainer.innerHTML = '';
+    
+        const allCardsContainer = document.createElement('div');
+        allCardsContainer.className = 'favorites-container';
 
         const favoriteMatchups = characterInfo.matchups.filter(matchup => matchup.favorite);
-
         favoriteMatchups.forEach(matchup => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `
-                <img src="${matchup.image}" alt="${matchup.opponent}">
-                <h3 style="display:none">${matchup.opponent}</h3>
-                <div class="favorite">❤️</div>
-                <div class="description">${matchup.description}</div>
-            `;
-            const description = card.querySelector('.description');
-            const favorite = card.querySelector('.favorite');
-            description.style.display = 'none'; 
-            favorite.style.display = 'none'; 
+            createCard(matchup, allCardsContainer, 'favorites');
+        });
 
-            card.addEventListener('click', () => {
-                expandCard(card);
-            });
+        favoritesContainer.appendChild(allCardsContainer);
 
-            const favoriteIcon = card.querySelector('.favorite');
-
-            favoriteIcon.addEventListener('click', (event) => {
-                event.stopPropagation(); 
+    }
+    
+    function createCard(matchup, container, section) {
+        const card = createCardElement(matchup, section);
+        cardAddEventListeners(card, matchup, section);
+        container.appendChild(card);
+    }
+    
+    function createCardElement(matchup, section) {
+        const card = document.createElement('div');
+        card.className = `card category-${matchup.category}`;
+        card.innerHTML = `
+            <img src="${matchup.image}" alt="${matchup.opponent}">
+            <h3 style="display:none">${matchup.opponent}</h3>
+        `;
+        return card;
+    }
+    
+    function cardAddEventListeners(card, matchup, section) {
+        card.addEventListener('mousedown', () => {
+            timer = setTimeout(() => {
                 toggleFavorite(card);
-            });
-            favoritesContainer.appendChild(card);
+            }, 1000);
+        });
+        
+        card.addEventListener('mouseup', () => {
+            clearTimeout(timer);
+        });
+        
+        card.addEventListener('click', () => {
+            updateDescription(matchup, section);
+        });
+
+        card.addEventListener('click', () => {
+            const description = document.getElementById(`${section}-description`); 
+            const yOffset = -120;
+            const y = description.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            window.scrollTo({ top: y, behavior: 'smooth' });
         });
     }
-
-    // Function to update the display of cards
-    function updateCards() {
-        const categoriesContainer = document.getElementById('categories-container');
+    
+    function updateDescription(matchup, section) {
+        const currentDescription = document.getElementById(`${section}-description`);
+        currentDescription.innerHTML = '';
+        const descriptionHeader = document.createElement('h3');
+        descriptionHeader.textContent = 'Description';
+        const descriptionText = document.createElement('div');
+        descriptionText.textContent = matchup.description;
+        currentDescription.appendChild(descriptionHeader);
+        currentDescription.appendChild(descriptionText);
+        currentDescription.style.display = 'block';
+    }
+    
+    
+    function updateAllCards() {
+        const categoriesContainer = document.getElementById('allcards-container-big');
         categoriesContainer.innerHTML = '';
-
-        const categories = {}; 
-
-        // Group matchups by categories
-        characterInfo.matchups.forEach(matchup => {
-            if (!categories[matchup.category]) {
-                categories[matchup.category] = []; // Initialize category array if not exists
-            }
-            categories[matchup.category].push(matchup); // Add matchup to its category
-        });
-
-        // Iterate over categories
+        const allCardsContainer = document.createElement('div');
+        allCardsContainer.className = 'allcards-container';
+    
+        const categories = groupMatchupsByCategory(characterInfo.matchups);
         Object.keys(categories).forEach(category => {
-            const section = document.createElement('section');
-            section.className = 'category-section';
-
-            const categoryHeader = document.createElement('h2');
-            categoryHeader.textContent = category; // Set category name
-            section.appendChild(categoryHeader);
-
-            const cardsContainer = document.createElement('div');
-            cardsContainer.className = 'cards-container';
-
-            // Create cards for matchups in this category
             categories[category].forEach(matchup => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `
-                    <img src="${matchup.image}" alt="${matchup.opponent}">
-                    <h3 style="display:none">${matchup.opponent}</h3>
-                    <div class="favorite">${matchup.favorite ? '❤️' : '🤍'}</div>
-                    <div class="description">${matchup.description}</div>
-                `;
-
-                const description = card.querySelector('.description');
-                const favorite = card.querySelector('.favorite');
-                description.style.display = 'none'; 
-                favorite.style.display = 'none'; 
-
-                card.addEventListener('click', () => {
-                    expandCard(card);
-                });
-
-                const favoriteIcon = card.querySelector('.favorite');
-
-                favoriteIcon.addEventListener('click', (event) => {
-                    event.stopPropagation(); 
-                    toggleFavorite(card);
-                });
-
-                cardsContainer.appendChild(card);
+                createCard(matchup, allCardsContainer, 'allcards');
             });
-
-            section.appendChild(cardsContainer);
-            categoriesContainer.appendChild(section);
         });
-
-        // Update favorite matchups display
+    
+        categoriesContainer.appendChild(allCardsContainer);
         updateFavorites();
     }
+    
+    function groupMatchupsByCategory(matchups) {
+        const categories = {};
+        matchups.forEach(matchup => {
+            if (!categories[matchup.category]) {
+                categories[matchup.category] = [];
+            }
+            categories[matchup.category].push(matchup);
+        });
+        return categories;
+    }
 
-    // Function to save favorite characters to cookies
     function saveFavoritesToCookies() {
         const favorites = characterInfo.matchups.filter(matchup => matchup.favorite).map(matchup => matchup.opponent);
         const order = characterInfo.matchups.map(matchup => matchup.opponent);
-        document.cookie = `favorites=${JSON.stringify(favorites)}; order=${JSON.stringify(order)}; expires=Fri, 31 Dec 9999 23:59:59 GMT`; // Save favorites and order to cookies
+        document.cookie = `favorites=${JSON.stringify(favorites)}; order=${JSON.stringify(order)}; expires=Fri, 31 Dec 9999 23:59:59 GMT`; 
     }
 
-    // Function to load favorite characters from cookies
     function loadFavoritesFromCookies() {
-        const cookies = document.cookie.split(';'); // Get all cookies
-        for (const cookie of cookies) {
-            const [name, value] = cookie.split('=');
-            if (name.trim() === 'favorites') {
-                const favorites = JSON.parse(value); // Parse favorites from cookie value
-                for (const favorite of favorites) {
-                    const index = characterInfo.matchups.findIndex(matchup => matchup.opponent === favorite);
-                    if (index !== -1) {
-                        characterInfo.matchups[index].favorite = true; // Set favorite status
-                    }
+        const favoritesCookie = document.cookie.split('; ').find(cookie => cookie.startsWith('favorites='));
+        if (favoritesCookie) {
+            const favorites = JSON.parse(favoritesCookie.split('=')[1]);
+            favorites.forEach(favorite => {
+                const matchup = characterInfo.matchups.find(matchup => matchup.opponent === favorite);
+                if (matchup) {
+                    matchup.favorite = true;
                 }
-                updateCards(); // Reorder matchups based on loaded favorites
-                break;
-            }
+            });
+            updateAllCards();
         }
     }
-
+    
     loadFavoritesFromCookies();
-
-    updateCards();
+    updateAllCards();
 });

@@ -64,10 +64,10 @@ footer {
 }
 
 /* Cards */
-#cards-container, .cards-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Responsive grid layout */
-    gap: 15px;
+#cards-container, .cards-container, .allcards-container, #allcards-container, #favorites-container, .favorites-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
     justify-content: flex-start; /* Align cards to the left */
 }
 
@@ -77,18 +77,41 @@ footer {
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     text-align: center;
-    padding: 10px;
+    padding: 6px;
+    max-height: 50px;
 }
 
 .card img {
-    max-width: 100%;
-    max-height: 70px; /* Set maximum height */
+    max-width: 40px;
+    width: 100%;
+    max-height: 40px; /* Set maximum height */
     border-radius: 8px;
+
 }
 
 .card .description {
     display: none;
     margin-top: 10px;
+}
+
+.category-offensive {
+    border: 1px solid red;
+}
+
+.category-defensive {
+    border: 1px solid blue;
+}
+
+.category-bigboi {
+    border: 1px solid brown;
+}
+
+.category-midrange {
+    border: 1px solid teal;
+}
+
+.category-trickster {
+    border: 1px solid rosybrown;
 }
 
 /* Search field */
@@ -115,6 +138,17 @@ footer {
 .card h3 {
     font-size: 18px; /* Set initial font size */
 }
+
+.category-header {
+    font-size: 14px; /* Smaller font size */
+    font-weight: bold;
+    margin: 10px 0 5px; /* Reduced margin */
+    padding: 5px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    text-align: center;
+}
+
 
 @media screen and (max-width: 768px) {
     .card h3 {
@@ -144,7 +178,6 @@ footer {
         padding: 8px;
     }
     .cards-container {
-        grid-template-columns: repeat(3, 1fr); /* Minimum 3 columns */
     }
     .card img {
         max-height: 50px; /* Set maximum height */
