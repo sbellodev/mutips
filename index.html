@@ -3,43 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Incineroar Matchup Info</title>
-    <link rel="stylesheet" href="./styles.css">
+    <title>Character Index</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .character-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .character-card {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+            width: 150px;
+            transition: transform 0.2s;
+        }
+        .character-card:hover {
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+        .character-card img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+        .character-card.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            cursor: not-allowed;
+        }
+        .character-card.disabled img {
+            filter: grayscale(100%);
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Incineroar</h1>
-    </header>
-    
-    <section id="character-info">
-        <h2>Character Information</h2>
-        <p id="description">Incineroar is a powerful grappler with strong throws and revenge mechanics.</p>
-    </section>
-    
-    <section id="resources">
-        <h2>Resources</h2>
-        <ul>
-            <li><a href="https://docs.google.com/document/d/1AKYaRLQxM7JP20DImVNj4u_uVHbWGWkxpQ_hNEa6Bdg/edit#heading=h.uk6ziqgkgb0d" target="_blank">Incineroar Discord Resource Doc</a></li>
-            <li><a href="https://kuroganehammer.com/Ultimate/Incineroar" target="_blank">Frame data - Kuroganehammer</a></li>
-        </ul>
-    </section>
-    <section id="allcards-section">
-        <input type="text" id="character-filter" placeholder="Enter character name...">
-        <div id="cards-container"></div>
-        <h2>Favorites</h2>
-        <div id="favorites-container-big" class="favorites-container-big"></div>
-        <div id="favorites-description" class="favorites-description">
-        <h2>All Characters</h2>
-            <div id="allcards-container-big" class="allcards-container-big"></div>
-            <div id="allcards-description" class="allcards-description">
-        </div>
-    </section>
+    <h1>Character Index</h1>
+        <div class="character-list" id="character-list">
+    </div>
 
-    <div id="categories-container"></div>
-        
+    <script>
+        const characters = [
+            { name: 'Incineroar', category: 'offensive', image: '/img/characters/incineroar.png', link: '/incineroar', finished: true},
+            { name: 'Mario', category: 'offensive', image: '/img/characters/mario.png', link: '/mario', finished: false},
+            { name: 'Mario',category: 'offensive',image: '/img/characters/mario.png',link : '/mario', finished: false},
+            { name: 'Donkey Kong',category: 'bigboi',image: '/img/characters/donkeykong.png',link : '/donkeykong', finished: false},
+            { name: 'Link',category: 'defensive',image: '/img/characters/link.png',link : '/link', finished: false},
+            { name: 'Samus',category: 'defensive',image: '/img/characters/samus.png',link : '/samus', finished: false},
+            { name: 'Yoshi',category: 'trickster',image: '/img/characters/yoshi.png',link : '/yoshi', finished: false},
+            { name: 'Kirby',category: 'trickster',image: '/img/characters/kirby.png',link : '/kirby', finished: false},
+            { name: 'Fox',category: 'offensive',image: '/img/characters/fox.png',link : '/fox', finished: false},
+            { name: 'Pikachu',category: 'offensive',image: '/img/characters/pikachu.png',link : '/pikachu', finished: false},
+            { name: 'Luigi',category: 'offensive',image: '/img/characters/luigi.png',link : '/luigi', finished: false},
+            { name: 'Ness',category: 'defensive',image: '/img/characters/ness.png',link : '/ness', finished: false},
+            { name: 'Captain Falcon',category: 'offensive',image: '/img/characters/captainfalcon.png',link : '/captainfalcon', finished: false},
+            { name: 'Jigglypuff',category: 'defensive',image: '/img/characters/jigglypuff.png',link : '/jigglypuff', finished: false},
+            { name: 'Peach/Daisy',category: 'offensive',image: '/img/characters/peach.png',link : '/peach', finished: false},
+            { name: 'Bowser',category: 'bigboi',image: '/img/characters/bowser.png',link : '/bowser', finished: false},
+            { name: 'Ice Climbers',category: 'trickster',image: '/img/characters/iceclimbers.png',link : '/iceclimbers', finished: false},
+            { name: 'Sheik',category: 'offensive',image: '/img/characters/sheik.png',link : '/sheik', finished: false},
+            { name: 'Zelda',category: 'defensive',image: '/img/characters/zelda.png',link : '/zelda', finished: false},
+            { name: 'Doctor Mario',category: 'offensive',image: '/img/characters/doctormario.png',link : '/doctormario', finished: false},
+            { name: 'Pichu',category: 'offensive',image: '/img/characters/pichu.png',link : '/pichu', finished: false},
+            { name: 'Falco',category: 'offensive',image: '/img/characters/falco.png',link : '/falco', finished: false},
+            { name: 'Marth/Lucina',category: 'midrange',image: '/img/characters/lucina.png',link : '/lucina', finished: false},
+            { name: 'Young Link',category: 'defensive',image: '/img/characters/younglink.png',link : '/younglink', finished: false},
+            { name: 'Ganondorf',category: 'bigboi',image: '/img/characters/ganondorf.png',link : '/ganondorf', finished: false},
+            { name: 'Mewtwo',category: 'offensive',image: '/img/characters/mewtwo.png',link : '/mewtwo', finished: false},
+            { name: 'Roy/Chrom',category: 'offensive',image: '/img/characters/roy.png',link : '/roy', finished: false},
+            { name: 'Mr. Game and Watch (GnW)',category: 'trickster',image: '/img/characters/gnw.png',link : '/gnw', finished: false},
+            { name: 'Meta Knight',category: 'trickster',image: '/img/characters/metaknight.png',link : '/metaknight', finished: false},
+            { name: 'Pit/Dark Pit',category: 'offensive',image: '/img/characters/pit.png',link : '/pit', finished: false},
+            { name: 'Zero Suit Samus',category: 'offensive',image: '/img/characters/zerosuitsamus.png',link : '/zerosuitsamus', finished: false},
+            { name: 'Wario',category: 'offensive',image: '/img/characters/wario.png',link : '/wario', finished: false},
+            { name: 'Snake',category: 'defensive',image: '/img/characters/snake.png',link : '/snake', finished: false},
+            { name: 'Ike',category: 'midrange',image: '/img/characters/ike.png',link : '/ike', finished: false},
+            { name: 'Pokemon Trainer',category: 'offensive',image: '/img/characters/pokemontrainer.png',link : '/pokemontrainer', finished: false},
+            { name: 'Diddy Kong',category: 'offensive',image: '/img/characters/diddykong.png',link : '/diddykong', finished: false},
+            { name: 'Lucas',category: 'defensive',image: '/img/characters/lucas.png',link : '/lucas', finished: false},
+            { name: 'Sonic',category: 'defensive',image: '/img/characters/sonic.png',link : '/sonic', finished: false},
+            { name: 'Dedede',category: 'defensive',image: '/img/characters/dedede.png',link : '/dedede', finished: false},
+            { name: 'Olimar',category: 'defensive',image: '/img/characters/olimar.png',link : '/olimar', finished: false},
+            { name: 'Lucario',category: 'offensive',image: '/img/characters/lucario.png',link : '/lucario', finished: false},
+            { name: 'Rob',category: 'defensive',image: '/img/characters/rob.png',link : '/rob', finished: false},
+            { name: 'Toon Link',category: 'defensive',image: '/img/characters/toonlink.png',link : '/toonlink', finished: false},
+            { name: 'Wolf',category: 'offensive',image: '/img/characters/wolf.png',link : '/wolf', finished: false},
+            { name: 'Villager',category: 'defensive',image: '/img/characters/villager.png',link : '/villager', finished: false},
+            { name: 'Mega Man',category: 'defensive',image: '/img/characters/megaman.png',link : '/megaman', finished: false},
+            { name: 'Wii Fit Trainer',category: 'defensive',image: '/img/characters/wiifittrainer.png',link : '/wiifittrainer', finished: false},
+            { name: 'Rosalina and Luma',category: 'defensive',image: '/img/characters/rosalina.png',link : '/rosalina', finished: false},
+            { name: 'Little Mac',category: 'offensive',image: '/img/characters/littlemac.png',link : '/littlemac', finished: false},
+            { name: 'Greninja',category: 'offensive',image: '/img/characters/greninja.png',link : '/greninja', finished: false},
+            { name: 'Palutena',category: 'offensive',image: '/img/characters/palutena.png',link : '/palutena', finished: false},
+            { name: 'Pacman',category: 'defensive',image: '/img/characters/pacman.png',link : '/pacman', finished: false},
+            { name: 'Robin',category: 'defensive',image: '/img/characters/robin.png',link : '/robin', finished: false},
+            { name: 'Shulk',category: 'midrange',image: '/img/characters/shulk.png',link : '/shulk', finished: false},
+            { name: 'Bowser Junior (Jr.)',category: 'defensive',image: '/img/characters/bowserjr.png',link : '/bowserjr', finished: false},
+            { name: 'Duck Hunt',category: 'defensive',image: '/img/characters/duckhunt.png',link : '/duckhunt', finished: false},
+            { name: 'Ryu',category: 'offensive',image: '/img/characters/ryu.png',link : '/ryu', finished: false},
+            { name: 'Ken',category: 'offensive',image: '/img/characters/ken.png',link : '/ken', finished: false},
+            { name: 'Cloud',category: 'midrange',image: '/img/characters/cloud.png',link : '/cloud', finished: false},
+            { name: 'Corrin',category: 'midrange',image: '/img/characters/corrin.png',link : '/corrin', finished: false},
+            { name: 'Bayonetta',category: 'offensive',image: '/img/characters/bayonetta.png',link : '/bayonetta', finished: false},
+            { name: 'Inkling',category: 'offensive',image: '/img/characters/inkling.png',link : '/inkling', finished: false},
+            { name: 'Ridley',category: 'bigboi',image: '/img/characters/ridley.png',link : '/ridley', finished: false},
+            { name: 'Simon/Richter',category: 'defensive',image: '/img/characters/ritcher.png',link : '/ritcher', finished: false},
+            { name: 'King K Rool',category: 'bigboi',image: '/img/characters/kingkrool.png',link : '/kingkrool', finished: false},
+            { name: 'Isabelle',category: 'defensive',image: '/img/characters/isabelle.png',link : '/isabelle', finished: false},
+            { name: 'Incineroar',category: 'bigboi',image: '/img/characters/incineroar.png',link : '/incineroar', finished: false},
+            { name: 'Piranha Plant',category: 'trickster',image: '/img/characters/piranhaplant.png',link : '/piranhaplant', finished: false},
+            { name: 'Joker',category: 'offensive',image: '/img/characters/joker.png',link : '/joker', finished: false},
+            { name: 'Hero',category: 'defensive',image: '/img/characters/hero.png',link : '/hero', finished: false},
+            { name: 'Banjo and Kazooie',category: 'trickster',image: '/img/characters/banjo.png',link : '/banjo', finished: false},
+            { name: 'Terry',category: 'offensive',image: '/img/characters/terry.png',link : '/terry', finished: false},
+            { name: 'Byleth',category: 'midrange',image: '/img/characters/byleth.png',link : '/byleth', finished: false},
+            { name: 'Min Min',category: 'defensive',image: '/img/characters/minmin.png',link : '/minmin', finished: false},
+            { name: 'Steve',category: 'defensive',image: '/img/characters/steve.png',link : '/steve', finished: false},
+            { name: 'Sephiroth',category: 'midrange',image: '/img/characters/sephiroth.png',link : '/sephiroth', finished: false},
+            { name: 'Pyra and Mythra',category: 'midrange',image: '/img/characters/pyra.png',link : '/pyra', finished: false},
+            { name: 'Kazuya',category: 'offensive',image: '/img/characters/kazuya.png',link : '/kazuya', finished: false},
+            { name: 'Sora',category: 'offensive',image: '/img/characters/sora.png',link : '/sora', finished: false }
+        ]
+    
+        const characterList = document.getElementById('character-list');
+
+        characters.forEach(character => {
+            const card = document.createElement('div');
+            card.className = 'character-card';
+            if (!character.finished) {
+                card.classList.add('disabled');
+            }
+            card.innerHTML = `
+                <img src='${character.image}' alt='${character.name}'>
+                <h3>${character.name}</h3>
+            `;
+            card.addEventListener('click', () => {
+                window.location.href = character.link;
+            });
+            characterList.appendChild(card);
+        });
+    </script>
     <footer>
         <p>Created by gattoalaparato</p>
     </footer>
-    <script src="script.js"></script>
 </body>
 </html>
