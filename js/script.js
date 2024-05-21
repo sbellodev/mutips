@@ -24,10 +24,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function loadLangFromCookies() {
         const langCookie = document.cookie.split('; ').find(cookie => cookie.startsWith('lang='));
+
         if (langCookie) {
             return langCookie.split('=')[1];
         }
-        return null;
+
+        return getBrowserLanguage();
+    }
+
+    function getBrowserLanguage() {
+        let lang = navigator.language || navigator.userLanguage;
+        switch (lang) {
+            case 'es-ES':
+                return 'ESP';
+            case 'en-EN':
+                return 'ENG';
+            // Add more cases for other language codes as needed
+            default:
+                return 'ENG'; // Return the original code if no match found
+        }
     }
 
     window.changeLanguage = function(lang) {
@@ -41,9 +56,6 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch(`../data/${characterName}${currentLang}Data.json`)
     .then(response => response.json())
     .then(characterInfo => {
-        console.log(characterInfo.description)
-        console.log(currentLang)
-
         document.getElementById('character-description').textContent = characterInfo.description
         document.querySelector('header h1').textContent = characterInfo.name;
         const categoryOrder = ['offensive', 'defensive', 'midrange', 'trickster', 'bigboi'];
