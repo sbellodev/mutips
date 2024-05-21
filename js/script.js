@@ -120,9 +120,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     heartIcon.innerHTML = matchup.favorite ? '❤️' : '🤍';
                 });
 
-                const description = document.getElementById(`${section}-description`);
                 const yOffset = -120;
-                const y = description.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                const y = currentDescription.getBoundingClientRect().top + window.pageYOffset + yOffset;
                 window.scrollTo({ top: y, behavior: 'smooth' });
             });
 
@@ -130,7 +129,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         function updateDescription(matchup, section) {
             const currentDescription = document.getElementById(`${section}-description`);
-            console.log(section)
             const descriptionHeader = document.createElement('h2');
             const favoriteIcon = matchup.favorite ? '❤️' : '🤍';
             currentDescription.innerHTML = '';

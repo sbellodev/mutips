@@ -134,6 +134,11 @@
             { name: 'Kazuya',category: 'offensive',image: 'img/characters/kazuya', link: 'kazuya', finished: false},
             { name: 'Sora',category: 'offensive',image: 'img/characters/sora', link: 'sora', finished: false }
         ]
+
+        const path = window.location.pathname;
+        const pathSegments = path.split('/');
+        const baseUrl = pathSegments[1] ? pathSegments[1] : '';
+        console.log(pathSegments, baseUrl)
     
         document.addEventListener('DOMContentLoaded', () => {
             const characterList = document.getElementById('character-list');
@@ -155,9 +160,9 @@
                 }
                 card.innerHTML = `
                     <picture>
-                        <source srcset="../${character.image}.webp" type="image/webp">
-                        <source srcset="../${character.image}.png" type="image/png">
-                        <img src="../${character.image}.png" alt="${character.name}">
+                        <source srcset="../${baseUrl}${character.image}.webp" type="image/webp">
+                        <source srcset="../${baseUrl}${character.image}.png" type="image/png">
+                        <img src="../${baseUrl}${character.image}.png" alt="${character.name}">
                     </picture>
                 `;
                 card.addEventListener('click', () => {
