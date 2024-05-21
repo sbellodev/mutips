@@ -6,10 +6,6 @@
     <title>Character Index</title>
     <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
         .character-list {
             display: flex;
             flex-wrap: wrap;
@@ -48,9 +44,14 @@
     </style>
 </head>
 <body>
-    <h1>Character Index</h1>
-        <div class="character-list" id="character-list">
-    </div>
+    <header>
+        <h1>Gatto Mutips</h1>
+    </header>
+
+    <section id="character-info">
+        <h2>Character Index</h2>
+        <div class="character-list" id="character-list"></div>
+    </section>
 
     <script>
         const characters = [
@@ -154,8 +155,9 @@
                 }
                 card.innerHTML = `
                     <picture>
-                        <source type="image/webp" srcSet="${character.image}.webp" />
-                        <img src="${character.image}.png" alt="${character.name}" />
+                        <source srcset="../${character.image}.webp" type="image/webp">
+                        <source srcset="../${character.image}.png" type="image/png">
+                        <img src="../${character.image}.png" alt="${character.name}">
                     </picture>
                 `;
                 card.addEventListener('click', () => {

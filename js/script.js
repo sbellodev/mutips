@@ -1,5 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
+    
+    const path = window.location.pathname;
+    const pathSegments = path.split('/');
+    const characterName = pathSegments.filter(segment => segment !== '').pop();
+    
+    function createHeaderStyle() {
+        const header = document.querySelector('header');
+        const style = document.createElement('style');
+        style.textContent = `
+            .header-incineroar {
+                background-image: url('../img/headers/${characterName}.png');
+                background-size: cover;
+                background-position: center;
+                background-blend-mode: exclusion;
+            }
+        `;
+        document.head.appendChild(style);
+        header.classList.add('header-incineroar');
+    }
 
+    createHeaderStyle();
+    
     fetch('../data/incineroarENGData.json')
     .then(response => response.json())
     .then(characterInfo => {
@@ -14,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.style.display = name.includes(filterValue) ? 'block' : 'none';
             });
         });
+
 
         function toggleFavorite(card) {
             const opponent = card.querySelector('h3').textContent;
@@ -51,8 +73,9 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = `card category-${matchup.category}`;
             card.innerHTML = `
                 <picture>
-                    <source type='image/webp' srcSet='${matchup.image}.webp' />
-                    <img src='${matchup.image}.png' alt='${matchup.opponent}' />
+                    <source srcset="../${matchup.image}.webp" type="image/webp">
+                    <source srcset="../${matchup.image}.png" type="image/png">
+                    <img src="../${matchup.image}.png" alt="${matchup.opponent}">
                 </picture>
                 <h3 style="display:none">${matchup.opponent}</h3>
             `;
