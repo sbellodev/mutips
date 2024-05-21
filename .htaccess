@@ -1,0 +1,3 @@
+RewriteEngine On
+RewriteCond %{REQUEST_URI} ^/mutips/$
+RewriteRule ^$ /mutips/index.html [R=301,L]
