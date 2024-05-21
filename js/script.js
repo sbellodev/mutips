@@ -61,14 +61,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function speakText(text) {
             let voices = window.speechSynthesis.getVoices();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.voice = voices[0]
+            utterance.rate = 1.2
+            utterance.pitch = 0.4
 
             if (window.speechSynthesis.speaking) {
                 window.speechSynthesis.cancel(); 
             } else {
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.voice = voices[6]
-                utterance.rate = 1.2
-                utterance.pitch = 0.4
                 window.speechSynthesis.speak(utterance);
             }
         }
