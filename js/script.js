@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
     const path = window.location.pathname;
     const pathSegments = path.split('/');
     const characterName = pathSegments.filter(segment => segment !== '').pop();
@@ -16,17 +15,40 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         `;
         document.head.appendChild(style);
-        header.classList.add('header-incineroar');
+        header.classList.add(`header-${characterName}`);
     }
 
+    function saveLangToCookies(lang) {
+        document.cookie = `lang=${lang}; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
+    }
+
+    function loadLangFromCookies() {
+        const langCookie = document.cookie.split('; ').find(cookie => cookie.startsWith('lang='));
+        if (langCookie) {
+            return langCookie.split('=')[1];
+        }
+        return null;
+    }
+
+    window.changeLanguage = function(lang) {
+        saveLangToCookies(lang);
+        location.reload();
+    };
+
+    const currentLang = loadLangFromCookies()
     createHeaderStyle();
 
-    fetch('../data/incineroarENGData.json')
+    fetch(`../data/${characterName}${currentLang}Data.json`)
     .then(response => response.json())
     .then(characterInfo => {
+        console.log(characterInfo.description)
+        console.log(currentLang)
+
+        document.getElementById('character-description').textContent = characterInfo.description
         document.querySelector('header h1').textContent = characterInfo.name;
         const categoryOrder = ['offensive', 'defensive', 'midrange', 'trickster', 'bigboi'];
         const characterFilterInput = document.getElementById('character-filter');
+
         characterFilterInput.addEventListener('input', () => {
             const filterValue = characterFilterInput.value.toLowerCase();
             const cards = document.querySelectorAll('.card');
@@ -35,7 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.style.display = name.includes(filterValue) ? 'block' : 'none';
             });
         });
-
 
         function toggleFavorite(card) {
             const opponent = card.querySelector('h3').textContent;
@@ -124,7 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const y = currentDescription.getBoundingClientRect().top + window.pageYOffset + yOffset;
                 window.scrollTo({ top: y, behavior: 'smooth' });
             });
-
         }
         
         function updateDescription(matchup, section) {
