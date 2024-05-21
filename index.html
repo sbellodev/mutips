@@ -14,13 +14,17 @@
             display: flex;
             flex-wrap: wrap;
             gap: 15px;
+            padding: 16px 0;
         }
         .character-card {
             border: 1px solid #ccc;
             border-radius: 5px;
             padding: 10px;
             text-align: center;
-            width: 150px;
+            width: 100%;
+            max-width: 120px;
+            height: 100%;
+            max-height: 120px;
             transition: transform 0.2s;
         }
         .character-card:hover {
@@ -28,8 +32,10 @@
             cursor: pointer;
         }
         .character-card img {
-            width: 100px;
-            height: 100px;
+            width: auto;
+            height: auto;
+            max-width: 50px;
+            max-height: 50px;
             object-fit: cover;
         }
         .character-card.disabled {
@@ -50,7 +56,6 @@
     <script>
         const characters = [
             { name: 'Incineroar', category: 'offensive', image: './img/characters/incineroar.png', link: './incineroar', finished: true},
-            { name: 'Mario', category: 'offensive', image: './img/characters/mario.png', link: './mario', finished: false},
             { name: 'Mario',category: 'offensive',image: './img/characters/mario.png', link: './mario', finished: false},
             { name: 'Donkey Kong',category: 'bigboi',image: './img/characters/donkeykong.png', link: './donkeykong', finished: false},
             { name: 'Link',category: 'defensive',image: './img/characters/link.png', link: './link', finished: false},
@@ -76,7 +81,7 @@
             { name: 'Ganondorf',category: 'bigboi',image: './img/characters/ganondorf.png', link: './ganondorf', finished: false},
             { name: 'Mewtwo',category: 'offensive',image: './img/characters/mewtwo.png', link: './mewtwo', finished: false},
             { name: 'Roy/Chrom',category: 'offensive',image: './img/characters/roy.png', link: './roy', finished: false},
-            { name: 'Mr. Game and Watch (GnW)',category: 'trickster',image: './img/characters/gnw.png', link: './gnw', finished: false},
+            { name: 'Mr. Game and Watch',category: 'trickster',image: './img/characters/gnw.png', link: './gnw', finished: false},
             { name: 'Meta Knight',category: 'trickster',image: './img/characters/metaknight.png', link: './metaknight', finished: false},
             { name: 'Pit/Dark Pit',category: 'offensive',image: './img/characters/pit.png', link: './pit', finished: false},
             { name: 'Zero Suit Samus',category: 'offensive',image: './img/characters/zerosuitsamus.png', link: './zerosuitsamus', finished: false},
@@ -130,22 +135,51 @@
             { name: 'Sora',category: 'offensive',image: './img/characters/sora.png', link: './sora', finished: false }
         ]
     
-        const characterList = document.getElementById('character-list');
+        document.addEventListener('DOMContentLoaded', () => {
+            const characterList = document.getElementById('character-list');
+            const categoryOrder = ['offensive', 'defensive', 'midrange', 'bigboi', 'trickster'];
+            const categories = {};
 
-        characters.forEach(character => {
-            const card = document.createElement('div');
-            card.className = 'character-card';
-            if (!character.finished) {
-                card.classList.add('disabled');
-            }
-            card.innerHTML = `
-                <img src='${character.image}' alt='${character.name}'>
-                <h3>${character.name}</h3>
-            `;
-            card.addEventListener('click', () => {
-                window.location.href = character.link;
+            characters.forEach(character => {
+                if (!categories[character.category]) {
+                    categories[character.category] = [];
+                }
+                categories[character.category].push(character);
             });
-            characterList.appendChild(card);
+
+            function createCharacterCard(character) {
+                const card = document.createElement('div');
+                card.className = `character-card category-${character.category}`;
+                if (!character.finished) {
+                    card.classList.add('disabled');
+                }
+                card.innerHTML = `
+                    <img src='${character.image}' alt='${character.name}'>
+                    <h3>${character.name}</h3>
+                `;
+                card.addEventListener('click', () => {
+                    window.location.href = character.link;
+                });
+                return card;
+            }
+
+            categoryOrder.forEach(category => {
+                if (categories[category]) {
+                    const categorySection = document.createElement('div');
+                    categorySection.className = 'category-section';
+
+                    const cardsContainer = document.createElement('div');
+                    cardsContainer.className = 'cards-container';
+
+                    categories[category].forEach(character => {
+                        const card = createCharacterCard(character);
+                        cardsContainer.appendChild(card);
+                    });
+
+                    categorySection.appendChild(cardsContainer);
+                    characterList.appendChild(categorySection);
+                }
+            });
         });
     </script>
     <footer>

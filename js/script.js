@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('before fetching')
+
     fetch('../data/incineroarENGData.json')
     .then(response => response.json())
     .then(characterInfo => {
         document.querySelector('header h1').textContent = characterInfo.name;
-        console.log(characterInfo)
+        const categoryOrder = ['offensive', 'defensive', 'midrange', 'bigboi', 'trickster'];
         const characterFilterInput = document.getElementById('character-filter');
         characterFilterInput.addEventListener('input', () => {
             const filterValue = characterFilterInput.value.toLowerCase();
@@ -106,11 +106,16 @@ document.addEventListener('DOMContentLoaded', () => {
             allCardsContainer.className = 'allcards-container';
 
             const categories = groupMatchupsByCategory(characterInfo.matchups);
-            Object.keys(categories).forEach(category => {
-                categories[category].forEach(matchup => {
-                    createCard(matchup, allCardsContainer, 'allcards');
-                });
-            });
+
+            categoryOrder.forEach(category => {
+                if (categories[category]) {
+                    categories[category].forEach(character => {
+                        //categories[category].forEach(matchup => {
+                            createCard(character, allCardsContainer, 'allcards');
+                        //});
+                    });
+                }
+            })
 
             categoriesContainer.appendChild(allCardsContainer);
             updateFavorites();
