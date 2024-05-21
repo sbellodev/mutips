@@ -85,6 +85,8 @@ footer {
     max-width: 40px;
     width: 100%;
     max-height: 40px; /* Set maximum height */
+    margin: 0 auto;
+    display: block;
 }
 
 .card .description {
@@ -110,6 +112,17 @@ footer {
 
 .category-trickster {
     background-color:  rgba(252, 20, 175, 0.2);
+}
+
+.favorite-heart {
+    max-width: 10px;
+    max-height: 10px;
+    font-size: 18px;
+    padding-left: 6px;
+}
+
+.tts-button{
+    padding-left: 6px;
 }
 
 /* Search field */

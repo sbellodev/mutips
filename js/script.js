@@ -56,6 +56,19 @@ document.addEventListener('DOMContentLoaded', () => {
             return card;
         }
 
+        function speakText(text) {
+            if (speechSynthesis.speaking) {
+                speechSynthesis.cancel(); 
+            } else {
+                let voices = window.speechSynthesis.getVoices();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.voice = voices[9]
+                utterance.rate = 1.1
+                utterance.pitch = 0.3
+                speechSynthesis.speak(utterance);
+            }
+        }
+
         function cardAddEventListeners(card, matchup, section) {
             let timer;
 
@@ -84,19 +97,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 const y = description.getBoundingClientRect().top + window.pageYOffset + yOffset;
                 window.scrollTo({ top: y, behavior: 'smooth' });
             });
-        }
 
+        }
+        
         function updateDescription(matchup, section) {
             const currentDescription = document.getElementById(`${section}-description`);
-            currentDescription.innerHTML = '';
             const descriptionHeader = document.createElement('h2');
-            descriptionHeader.textContent = 'Description';
-            const descriptionText = document.createElement('div');
             const favoriteIcon = matchup.favorite ? '❤️' : '🤍';
-            descriptionText.innerHTML = `${matchup.description} <span class="favorite-heart">${favoriteIcon}</span>`;
+            currentDescription.innerHTML = '';
+            descriptionHeader.innerHTML = `Description <button class="tts-button">🔊</button><span class="favorite-heart">${favoriteIcon}</span>`;
+            const descriptionText = document.createElement('div');
+            descriptionText.innerHTML = `${matchup.description}`;
             currentDescription.appendChild(descriptionHeader);
             currentDescription.appendChild(descriptionText);
             currentDescription.style.display = 'block';
+
+            const ttsButton = currentDescription.querySelector('.tts-button');
+            ttsButton.addEventListener('click', (event) => {
+                event.stopPropagation();
+                speakText(matchup.description);
+            });
         }
 
         function updateAllCards() {
