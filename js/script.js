@@ -50,22 +50,26 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('div');
             card.className = `card category-${matchup.category}`;
             card.innerHTML = `
-                <img src="${matchup.image}" alt="${matchup.opponent}">
+                <picture>
+                    <source type='image/webp' srcSet='${matchup.image}.webp' />
+                    <img src='${matchup.image}.png' alt='${matchup.opponent}' />
+                </picture>
                 <h3 style="display:none">${matchup.opponent}</h3>
             `;
             return card;
         }
 
         function speakText(text) {
-            if (speechSynthesis.speaking) {
-                speechSynthesis.cancel(); 
+            let voices = window.speechSynthesis.getVoices();
+
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel(); 
             } else {
-                let voices = window.speechSynthesis.getVoices();
                 const utterance = new SpeechSynthesisUtterance(text);
-                utterance.voice = voices[9]
+                utterance.voice = voices[6]
                 utterance.rate = 1.2
                 utterance.pitch = 0.4
-                speechSynthesis.speak(utterance);
+                window.speechSynthesis.speak(utterance);
             }
         }
 
