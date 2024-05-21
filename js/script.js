@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     createHeaderStyle();
-    
+
     fetch('../data/incineroarENGData.json')
     .then(response => response.json())
     .then(characterInfo => {
@@ -130,6 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         function updateDescription(matchup, section) {
             const currentDescription = document.getElementById(`${section}-description`);
+            console.log(section)
             const descriptionHeader = document.createElement('h2');
             const favoriteIcon = matchup.favorite ? '❤️' : '🤍';
             currentDescription.innerHTML = '';
