@@ -92,7 +92,7 @@
             { name: 'Diddy Kong',category: 'offensive',image: 'img/characters/diddykong', link: 'diddykong', finished: false},
             { name: 'Lucas',category: 'defensive',image: 'img/characters/lucas', link: 'lucas', finished: false},
             { name: 'Sonic',category: 'defensive',image: 'img/characters/sonic', link: 'sonic', finished: false},
-            { name: 'Dedede',category: 'defensive',image: 'img/characters/dedede', link: 'dedede', finished: false},
+            { name: 'Dedede',category: 'bigboi',image: 'img/characters/dedede', link: 'dedede', finished: false},
             { name: 'Olimar',category: 'defensive',image: 'img/characters/olimar', link: 'olimar', finished: false},
             { name: 'Lucario',category: 'offensive',image: 'img/characters/lucario', link: 'lucario', finished: false},
             { name: 'Rob',category: 'defensive',image: 'img/characters/rob', link: 'rob', finished: false},
@@ -100,7 +100,7 @@
             { name: 'Wolf',category: 'offensive',image: 'img/characters/wolf', link: 'wolf', finished: false},
             { name: 'Villager',category: 'defensive',image: 'img/characters/villager', link: 'villager', finished: false},
             { name: 'Mega Man',category: 'defensive',image: 'img/characters/megaman', link: 'megaman', finished: false},
-            { name: 'Wii Fit Trainer',category: 'defensive',image: 'img/characters/wiifittrainer', link: 'wiifittrainer', finished: false},
+            { name: 'Wii Fit Trainer',category: 'trickster',image: 'img/characters/wiifittrainer', link: 'wiifittrainer', finished: false},
             { name: 'Rosalina and Luma',category: 'defensive',image: 'img/characters/rosalina', link: 'rosalina', finished: false},
             { name: 'Little Mac',category: 'offensive',image: 'img/characters/littlemac', link: 'littlemac', finished: false},
             { name: 'Greninja',category: 'offensive',image: 'img/characters/greninja', link: 'greninja', finished: false},
@@ -138,11 +138,11 @@
         const path = window.location.pathname;
         const pathSegments = path.split('/');
         const baseUrl = pathSegments[1] ? pathSegments[1] : '';
-        console.log(pathSegments, baseUrl)
+        console.log(pathSegments, baseUrl)  
     
         document.addEventListener('DOMContentLoaded', () => {
             const characterList = document.getElementById('character-list');
-            const categoryOrder = ['offensive', 'defensive', 'midrange', 'bigboi', 'trickster'];
+            const categoryOrder = ['offensive', 'defensive', 'midrange', 'trickster', 'bigboi'];
             const categories = {};
 
             characters.forEach(character => {
@@ -160,9 +160,9 @@
                 }
                 card.innerHTML = `
                     <picture>
-                        <source srcset="../${baseUrl}${character.image}.webp" type="image/webp">
-                        <source srcset="../${baseUrl}${character.image}.png" type="image/png">
-                        <img src="../${baseUrl}${character.image}.png" alt="${character.name}">
+                        <source srcset="../${baseUrl}/${character.image}.webp" type="image/webp">
+                        <source srcset="../${baseUrl}/${character.image}.png" type="image/png">
+                        <img src="../${baseUrl}/${character.image}.png" alt="${character.name}">
                     </picture>
                 `;
                 card.addEventListener('click', () => {

@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(response => response.json())
     .then(characterInfo => {
         document.querySelector('header h1').textContent = characterInfo.name;
-        const categoryOrder = ['offensive', 'defensive', 'midrange', 'bigboi', 'trickster'];
+        const categoryOrder = ['offensive', 'defensive', 'midrange', 'trickster', 'bigboi'];
         const characterFilterInput = document.getElementById('character-filter');
         characterFilterInput.addEventListener('input', () => {
             const filterValue = characterFilterInput.value.toLowerCase();
@@ -86,8 +86,8 @@ document.addEventListener('DOMContentLoaded', () => {
             let voices = window.speechSynthesis.getVoices();
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.voice = voices[0]
-            utterance.rate = 1.2
-            utterance.pitch = 0.4
+            utterance.rate = 1.1
+            utterance.pitch = 0.5
 
             if (window.speechSynthesis.speaking) {
                 window.speechSynthesis.cancel(); 
