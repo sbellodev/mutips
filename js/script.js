@@ -63,8 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 let voices = window.speechSynthesis.getVoices();
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.voice = voices[9]
-                utterance.rate = 1.1
-                utterance.pitch = 0.3
+                utterance.rate = 1.2
+                utterance.pitch = 0.4
                 speechSynthesis.speak(utterance);
             }
         }
@@ -87,6 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const currentDescription = document.getElementById(`${section}-description`);
                 const heartIcon = currentDescription.querySelector('.favorite-heart');
+
                 heartIcon.addEventListener('click', () => {
                     toggleFavorite(card); 
                     heartIcon.innerHTML = matchup.favorite ? '❤️' : '🤍';
@@ -130,9 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
             categoryOrder.forEach(category => {
                 if (categories[category]) {
                     categories[category].forEach(character => {
-                        //categories[category].forEach(matchup => {
-                            createCard(character, allCardsContainer, 'allcards');
-                        //});
+                        createCard(character, allCardsContainer, 'allcards');
                     });
                 }
             })
