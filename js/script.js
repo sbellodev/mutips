@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    fetch('/data/incineroarData.json')
+    console.log('before fetching')
+    fetch('../data/incineroarENGData.json')
     .then(response => response.json())
     .then(characterInfo => {
         document.querySelector('header h1').textContent = characterInfo.name;
