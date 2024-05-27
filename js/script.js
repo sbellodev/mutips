@@ -181,22 +181,30 @@ document.addEventListener('DOMContentLoaded', () => {
         function updateAllCards() {
             const categoriesContainer = document.getElementById('allcards-container-big');
             categoriesContainer.innerHTML = '';
-            const allCardsContainer = document.createElement('div');
-            allCardsContainer.className = 'allcards-container';
-
             const categories = groupMatchupsByCategory(characterInfo.matchups);
-
+        
             categoryOrder.forEach(category => {
                 if (categories[category]) {
+                    // Create a container for each category with the 'allcards-container' class
+                    const categoryContainer = document.createElement('div');
+                    categoryContainer.className = 'allcards-container';
+                    
+                    // Add a header for the category
+                    const categoryHeader = document.createElement('div');
+                    categoryContainer.appendChild(categoryHeader);
+                    
                     categories[category].forEach(character => {
-                        createCard(character, allCardsContainer, 'allcards');
+                        createCard(character, categoryContainer, 'allcards');
                     });
+        
+                    // Append the category container to the main container
+                    categoriesContainer.appendChild(categoryContainer);
                 }
-            })
-
-            categoriesContainer.appendChild(allCardsContainer);
+            });
+        
             updateFavorites();
         }
+        
 
         function groupMatchupsByCategory(matchups) {
             const categories = {};

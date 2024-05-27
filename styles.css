@@ -71,6 +71,7 @@ footer {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start; /* Align cards to the left */
+    padding: 2px 0;
 }
 
 .card {
