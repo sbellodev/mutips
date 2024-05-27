@@ -70,16 +70,15 @@ footer {
 #cards-container, .cards-container, .allcards-container, #allcards-container, #favorites-container, .favorites-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
     justify-content: flex-start; /* Align cards to the left */
 }
 
 .card {
     background-color: #fff;
-    border-radius: 4px;
     cursor: pointer;
     text-align: center;
     max-height: 50px;
+    padding: 6px;
 }
 
 .card img {
