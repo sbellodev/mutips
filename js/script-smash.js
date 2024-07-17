@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const style = document.createElement('style');
         style.textContent = `
             .header-incineroar {
-                background-image: url('../img/headers/${characterName}.png');
+                background-image: url('/img/smash/headers/${characterName}.png');
                 background-size: cover;
                 background-position: center;
                 background-blend-mode: exclusion;
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentLang = loadLangFromCookies()
     createHeaderStyle();
 
-    fetch(`../data/${characterName}${currentLang}Data.json`)
+    fetch(`/data/${characterName}${currentLang}Data.json`)
     .then(response => response.json())
     .then(characterInfo => {
         document.getElementById('character-description').textContent = characterInfo.description
@@ -106,9 +106,9 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = `card category-${matchup.category}`;
             card.innerHTML = `
                 <picture>
-                    <source srcset="../${matchup.image}.webp" type="image/webp">
-                    <source srcset="../${matchup.image}.png" type="image/png">
-                    <img src="../${matchup.image}.png" alt="${matchup.opponent}">
+                    <source srcset="../../${matchup.image}.webp" type="image/webp">
+                    <source srcset="../../${matchup.image}.png" type="image/png">
+                    <img src="../../${matchup.image}.png" alt="${matchup.opponent}">
                 </picture>
                 <h3 style="display:none">${matchup.opponent}</h3>
             `;
