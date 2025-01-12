@@ -53,7 +53,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentLang = loadLangFromCookies()
     createHeaderStyle();
 
-    const urlToFetch = `https://${window.location.host}/data/${characterName}${currentLang}Data.json`;
+    const developMode = window.location.host.includes('127.0.0.1'); 
+
+    const baseUrl = developMode
+      ? `http://${window.location.host}` 
+      : `https://${window.location.host}/mutips`; 
+    
+    const urlToFetch = `${baseUrl}/data/${characterName}${currentLang}Data.json`;
+    
 
     fetch(urlToFetch)
     .then(response => response.json())
