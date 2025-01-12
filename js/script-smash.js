@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentLang = loadLangFromCookies()
     createHeaderStyle();
 
-    const urlToFetch = `http://${window.location.host}/data/${characterName}${currentLang}Data.json`;
+    const urlToFetch = `https://${window.location.host}/data/${characterName}${currentLang}Data.json`;
 
     fetch(urlToFetch)
     .then(response => response.json())
