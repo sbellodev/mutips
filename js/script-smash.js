@@ -2,13 +2,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const path = window.location.pathname;
     const pathSegments = path.split('/');
     const characterName = pathSegments.filter(segment => segment !== '').pop();
+
+    window.changeLanguage = function(lang) {
+        saveLangToCookies(lang);
+        location.reload();
+    };
+
+    const currentLang = loadLangFromCookies()
+    
+    const developMode = window.location.host.includes('127.0.0.1'); 
+
+    const baseUrl = developMode
+      ? `http://${window.location.host}` 
+      : `https://${window.location.host}/mutips`; 
+    
+    const urlToFetch = `${baseUrl}/data/${characterName}${currentLang}Data.json`;
     
     function createHeaderStyle() {
         const header = document.querySelector('header');
         const style = document.createElement('style');
         style.textContent = `
             .header-incineroar {
-                background-image: url('/img/smash/headers/${characterName}.png');
+                background-image: url('${baseUrl}/img/smash/headers/${characterName}.png');
                 background-size: cover;
                 background-position: center;
                 background-blend-mode: exclusion;
@@ -44,23 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return 'ENG'; // Return the original code if no match found
         }
     }
-
-    window.changeLanguage = function(lang) {
-        saveLangToCookies(lang);
-        location.reload();
-    };
-
-    const currentLang = loadLangFromCookies()
-    createHeaderStyle();
-
-    const developMode = window.location.host.includes('127.0.0.1'); 
-
-    const baseUrl = developMode
-      ? `http://${window.location.host}` 
-      : `https://${window.location.host}/mutips`; 
-    
-    const urlToFetch = `${baseUrl}/data/${characterName}${currentLang}Data.json`;
-    
+   
 
     fetch(urlToFetch)
     .then(response => response.json())
@@ -246,6 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        createHeaderStyle();
         loadFavoritesFromCookies();
         updateAllCards();
     });
