@@ -53,7 +53,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentLang = loadLangFromCookies()
     createHeaderStyle();
 
-    fetch(`/data/${characterName}${currentLang}Data.json`)
+    const urlToFetch = `http://${window.location.host}/data/${characterName}${currentLang}Data.json`;
+
+    fetch(urlToFetch)
     .then(response => response.json())
     .then(characterInfo => {
         document.getElementById('character-description').textContent = characterInfo.description
