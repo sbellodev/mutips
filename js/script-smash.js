@@ -106,9 +106,9 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = `card category-${matchup.category}`;
             card.innerHTML = `
                 <picture>
-                    <source srcset="../../${matchup.image}.webp" type="image/webp">
-                    <source srcset="../../${matchup.image}.png" type="image/png">
-                    <img src="../../${matchup.image}.png" alt="${matchup.opponent}">
+                    <source srcset="../../../${matchup.image}.webp" type="image/webp">
+                    <source srcset="../../../${matchup.image}.png" type="image/png">
+                    <img src="../../../${matchup.image}.png" alt="${matchup.opponent}">
                 </picture>
                 <h3 style="display:none">${matchup.opponent}</h3>
             `;

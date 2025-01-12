@@ -162,9 +162,9 @@
                 }
                 card.innerHTML = `
                     <picture>
-                        <source srcset="../${character.image}.webp" type="image/webp">
-                        <source srcset="../${character.image}.png" type="image/png">
-                        <img src="../${character.image}.png" alt="${character.name}">
+                        <source srcset="../../${character.image}.webp" type="image/webp">
+                        <source srcset="../../${character.image}.png" type="image/png">
+                        <img src="../../${character.image}.png" alt="${character.name}">
                     </picture>
                 `;
                 card.addEventListener('click', () => {
